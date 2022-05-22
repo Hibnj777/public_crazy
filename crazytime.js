@@ -51,9 +51,31 @@ async function crazytime(msg, stavka) {
 
     game.bank += Number(razmer_stavka.text)
 
-    game.x1 += 1
-
-    await game.save()
+    if(stavka == 'x1') {
+        game.x1 += 1
+        await game.save()
+    } else if(stavka == 'x2') {
+        game.x2 += 1
+        await game.save()
+    } else if(stavka == 'x5') {
+        game.x5 += 1
+        await game.save()
+    } else if(stavka == 'x10') {
+        game.x10 += 1
+        await game.save()
+    } else if(stavka == 'cf') {
+        game.coinfl += 1
+        await game.save()
+    } else if(stavka == 'pach') {
+        game.pachi += 1
+        await game.save()
+    } else if(stavka == 'ch') {
+        game.cash += 1
+        await game.save()
+    } else if(stavka == 'ct') {
+        game.crazy += 1
+        await game.save()
+    }
 
     if (ishod == 'none') {
         let random = Math.floor(Math.random() * 10)
@@ -245,6 +267,60 @@ function commandManager(msg) {
         },
         ct: async () => {
             crazytime(msg, msg.messagePayload.command)
+        },
+        checkct: async() => {
+            const game = await Game.findOne({ id: 1 })
+            let private = md5(`${msg.peerId}|${game.plays}`)
+            const user_x1 = await User.find({ stavka: 'x1' }); const user_x2 = await User.find({ stavka: 'x2' }); const user_x5 = await User.find({ stavka: 'x5' }); const user_x10 = await User.find({ stavka: 'x10' }); const user_coinfl = await User.find({ stavka: 'coinfl' }); const user_pachi = await User.find({ stavka: 'pachi' }); const user_cash = await User.find({ stavka: 'cash' }); const user_crazy = await User.find({ stavka: 'crazy' })
+            let x1 = []
+            let x2 = []
+            let x5 = []
+            let x10 = []
+            let coinfl = []
+            let pachi = []
+            let cash = []
+            let crazy = []
+            for (i in user_x1) {
+                if (!x1.includes(`[id${user_x1[i].id}|${user_x1[i].nick}] - ${new Intl.NumberFormat('ru-RU').format(user_x1[i].razmer_stavka)} MK`)) {
+                    x1.push(`[id${user_x1[i].id}|${user_x1[i].nick}] - ${new Intl.NumberFormat('ru-RU').format(user_x1[i].razmer_stavka)} MK`)
+                }
+            }
+            for (i in user_x2) {
+                if (!x2.includes(`[id${user_x2[i].id}|${user_x2[i].nick}] - ${new Intl.NumberFormat('ru-RU').format(user_x2[i].razmer_stavka)} MK`)) {
+                    x2.push(`[id${user_x2[i].id}|${user_x2[i].nick}] - ${new Intl.NumberFormat('ru-RU').format(user_x2[i].razmer_stavka)} MK`)
+                }
+            }
+            for (i in user_x5) {
+                if (!x5.includes(`[id${user_x5[i].id}|${user_x5[i].nick}] - ${new Intl.NumberFormat('ru-RU').format(user_x5[i].razmer_stavka)} MK`)) {
+                    x5.push(`[id${user_x5[i].id}|${user_x5[i].nick}] - ${new Intl.NumberFormat('ru-RU').format(user_x5[i].razmer_stavka)} MK`)
+                }
+            }
+            for (i in user_x10) {
+                if (!x10.includes(`[id${user_x10[i].id}|${user_x10[i].nick}] - ${new Intl.NumberFormat('ru-RU').format(user_x10[i].razmer_stavka)} MK`)) {
+                    x10.push(`[id${user_x10[i].id}|${user_x10[i].nick}] - ${new Intl.NumberFormat('ru-RU').format(user_x10[i].razmer_stavka)} MK`)
+                }
+            }
+            for (i in user_coinfl) {
+                if (!coinfl.includes(`[id${user_coinfl[i].id}|${user_coinfl[i].nick}] - ${new Intl.NumberFormat('ru-RU').format(user_coinfl[i].razmer_stavka)} MK`)) {
+                    coinfl.push(`[id${user_coinfl[i].id}|${user_coinfl[i].nick}] - ${new Intl.NumberFormat('ru-RU').format(user_coinfl[i].razmer_stavka)} MK`)
+                }
+            }
+            for (i in user_pachi) {
+                if (!pachi.includes(`[id${user_pachi[i].id}|${user_pachi[i].nick}] - ${new Intl.NumberFormat('ru-RU').format(user_pachi[i].razmer_stavka)} MK`)) {
+                    pachi.push(`[id${user_pachi[i].id}|${user_pachi[i].nick}] - ${new Intl.NumberFormat('ru-RU').format(user_pachi[i].razmer_stavka)} MK`)
+                }
+            }
+            for (i in user_cash) {
+                if (!cash.includes(`[id${user_cash[i].id}|${user_cash[i].nick}] - ${new Intl.NumberFormat('ru-RU').format(user_cash[i].razmer_stavka)} MK`)) {
+                    cash.push(`[id${user_cash[i].id}|${user_cash[i].nick}] - ${new Intl.NumberFormat('ru-RU').format(user_cash[i].razmer_stavka)} MK`)
+                }
+            }
+            for (i in user_crazy) {
+                if (!crazy.includes(`[id${user_crazy[i].id}|${user_crazy[i].nick}] - ${new Intl.NumberFormat('ru-RU').format(user_crazy[i].razmer_stavka)} MK`)) {
+                    crazy.push(`[id${user_crazy[i].id}|${user_crazy[i].nick}] - ${new Intl.NumberFormat('ru-RU').format(user_crazy[i].razmer_stavka)} MK`)
+                }
+            }
+            return msg.send(`Данные о текущей игре CRAZYTIME:\n\nБанк: ${game.bank}\nХэш: ${md5(`${ishod},${kudadopishod},${dopishod}|${private}`)}\nПроверка честности хэша: ${ishod},${kudadopishod},${dopishod}|${private}\n\n${(game.x1 > 0 && x1.length > 0) ? 'Ставки на x1:' : ''}\n${x1.join('\n')}\n\n${(game.x2 > 0 && x2.length > 0) ? 'Ставки на x2:' : ''}\n${x2.join('\n')}\n\n${(game.x5 > 0 && x5.length > 0) ? 'Ставки на x5:' : ''}\n${x5.join('\n')}\n\n${(game.x10 > 0 && x10.length > 0) ? 'Ставки на x10:' : ''}\n${x10.join('\n')}\n\n${(game.coinfl > 0 && coinfl.length > 0) ? 'Ставки на COINFLIP:' : ''}\n${coinfl.join('\n')}\n\n${(game.pachi > 0 && pachi.length > 0) ? 'Ставки на PACHINKO:' : ''}\n${pachi.join('\n')}\n\n${(game.cash > 0 && cash.length > 0) ? 'Ставки на CASHHUNT:' : ''}\n${cash.join('\n')}\n\n${(game.crazy > 0 && crazy.length > 0) ? 'Ставки на CRAZYTIME:' : ''}\n${crazy.join('\n')}\n\nДо конца раунда: ${(Math.trunc((game.dater - Date.now()) / 1000) > 0) ? `${Math.trunc((game.dater - Date.now()) / 1000)}` : ''} сек.`)
         }
     }
     try {

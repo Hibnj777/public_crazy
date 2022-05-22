@@ -1,6 +1,6 @@
 const { vk, getVkNameById, questionManager, idByDomain } = require('./VK')
 
-const { mainMenu, persMenu, check, exchange, profile } = require('./keyboard')
+const { mainMenu, persMenu, admpanel } = require('./keyboard')
 
 const { User, Game } = require('./db')
 
@@ -18,45 +18,11 @@ setInterval(async () => {
         console.log(`${date.getDate()}:${date.getHours()}:${date.getMinutes()}`)
         const toppers = await User.find({ topmonth: { $gt: 0 } }).sort({ topmonth: -1 })
 
-        if (toppers[0]) {
-            toppers[0].money += 10000000
-            await toppers[0].save()
-        }
-        if (toppers[1]) {
-            toppers[1].money += 5000000
-            await toppers[1].save()
-        }
-        if (toppers[2]) {
-            toppers[2].money += 2500000
-            await toppers[2].save()
-        }
-        if (toppers[3]) {
-            toppers[3].money += 1500000
-            await toppers[3].save()
-        }
-        if (toppers[4]) {
-            toppers[4].money += 1000000
-            await toppers[4].save()
-        }
-        if (toppers[5]) {
-            toppers[5].money += 750000
-            await toppers[5].save()
-        }
-        if (toppers[6]) {
-            toppers[6].money += 500000
-            await toppers[6].save()
-        }
-        if (toppers[7]) {
-            toppers[7].money += 250000
-            await toppers[7].save()
-        }
-        if (toppers[8]) {
-            toppers[8].money += 100000
-            await toppers[8].save()
-        }
-        if (toppers[9]) {
-            toppers[9].money += 50000
-            toppers[9].save()
+        const award = [10000000, 5000000, 2500000, 1500000, 1000000, 750000, 500000, 250000, 100000, 50000]
+
+        for (let pos = 0; pos <= toppers.length; pos++) {
+            toppers[pos].money += award[pos]
+            toppers[pos].save()
         }
 
         const sbros = await User.updateMany({ topmonth: { $gt: 0 } }, { topmonth: 0 })
@@ -70,45 +36,11 @@ setInterval(async () => {
         console.log(`${date.getHours()}:${date.getMinutes()}`)
         const toppers = await User.find({ topday: { $gt: 0 } }).sort({ topday: -1 })
 
-        if (toppers[0]) {
-            toppers[0].money += 1000000
-            await toppers[0].save()
-        }
-        if (toppers[1]) {
-            toppers[1].money += 750000
-            await toppers[1].save()
-        }
-        if (toppers[2]) {
-            toppers[2].money += 500000
-            await toppers[2].save()
-        }
-        if (toppers[3]) {
-            toppers[3].money += 250000
-            await toppers[3].save()
-        }
-        if (toppers[4]) {
-            toppers[4].money += 100000
-            await toppers[4].save()
-        }
-        if (toppers[5]) {
-            toppers[5].money += 50000
-            await toppers[5].save()
-        }
-        if (toppers[6]) {
-            toppers[6].money += 30000
-            await toppers[6].save()
-        }
-        if (toppers[7]) {
-            toppers[7].money += 25000
-            await toppers[7].save()
-        }
-        if (toppers[8]) {
-            toppers[8].money += 15000
-            await toppers[8].save()
-        }
-        if (toppers[9]) {
-            toppers[9].money += 5000
-            toppers[9].save()
+        const award = [1000000, 750000, 500000, 250000, 100000, 50000, 30000, 25000, 15000, 5000]
+
+        for (let pos = 0; pos <= toppers.length; pos++) {
+            toppers[pos].money += award[pos]
+            toppers[pos].save()
         }
 
         const sbros = await User.updateMany({ topday: { $gt: 0 } }, { topday: 0 })
@@ -198,14 +130,26 @@ vk.updates.on('message_new', async (msg) => {
                 keyboard: persMenu
             })
     }
-    if(!msg.isChat && findUser) {
+    if (!msg.isChat && findUser) {
         if (msg.text.includes('/клавиатура')) {
             return msg.send('клавиатура включена!',
                 {
                     keyboard: persMenu
                 })
         }
+        if (msg.text == '/админ-панель') {
+            if (findUser.owner > 0) {
+                return msg.send('админ-панель:', {
+                    keyboard: admpanel
+                })
+            } else {
+                return msg.send(`доступ запрещён`)
+            }
+        }
         else {
+            if(msg.messagePayload.command == 'checkct' || msg.messagePayload.command == 'givemoney' || msg.messagePayload.command == 'tozero') {
+                commandManager(msg)
+            }
             lsmanager(msg)
         }
     }
