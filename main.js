@@ -59,10 +59,7 @@ setInterval(async () => {
             toppers[9].save()
         }
 
-        for (i in toppers) {
-            toppers[i].topmonth = 0
-            await toppers[i].save()
-        }
+        const sbros = await User.updateMany({ topmonth: { $gt: 0 } }, { topmonth: 0 })
     }
 }, 60000);
 
@@ -114,10 +111,8 @@ setInterval(async () => {
             toppers[9].save()
         }
 
-        for (i in toppers) {
-            toppers[i].topday = 0
-            toppers[i].save()
-        }
+        const sbros = await User.updateMany({ topday: { $gt: 0 } }, { topday: 0 })
+
     }
 }, 60000);
 
