@@ -196,37 +196,22 @@ function commandManager(msg) {
         bank: async () => {
             const game = await Game.findOne({ id: 1 })
 
-            const x1 = []; const x2 = []; const x5 = []; const x10 = []; const coinfl = []; const pachi = []; const cash = []; const crazy = []
+            const list = {
+                x1: [],
+                x2: [],
+                x5: [],
+                x10: [],
+                coinfl: [],
+                pachi: [],
+                cash: [],
+                crazy: []
+            }
 
             const stavochnik = await User.find({ stavka: { $ne: 'none' } })
             const text = (nick, id, stavka, razmer_stavka) => {
-                switch (stavka) {
-                    case 'x1':
-                        x1.push(`[id${id}|${nick}] - ${new Intl.NumberFormat('ru-RU').format(razmer_stavka)} MK`)
-                        break;
-                    case 'x2':
-                        x2.push(`[id${id}|${nick}] - ${new Intl.NumberFormat('ru-RU').format(razmer_stavka)} MK`)
-                        break;
-                    case 'x5':
-                        x5.push(`[id${id}|${nick}] - ${new Intl.NumberFormat('ru-RU').format(razmer_stavka)} MK`)
-                        break;
-                    case 'x10':
-                        x10.push(`[id${id}|${nick}] - ${new Intl.NumberFormat('ru-RU').format(razmer_stavka)} MK`)
-                        break;
-                    case 'coinfl':
-                        coinfl.push(`[id${id}|${nick}] - ${new Intl.NumberFormat('ru-RU').format(razmer_stavka)} MK`)
-                        break;
-                    case 'pachi':
-                        pachi.push(`[id${id}|${nick}] - ${new Intl.NumberFormat('ru-RU').format(razmer_stavka)} MK`)
-                        break;
-                    case 'cash':
-                        cash.push(`[id${id}|${nick}] - ${new Intl.NumberFormat('ru-RU').format(razmer_stavka)} MK`)
-                        break;
-                    case 'crazy':
-                        crazy.push(`[id${id}|${nick}] - ${new Intl.NumberFormat('ru-RU').format(razmer_stavka)} MK`)
-                        break;
-                }
+                list[stavka].push(`[id${id}|${nick}] - ${new Intl.NumberFormat('ru-RU').format(razmer_stavka)} MK`)
             }
+
             stavochnik.map(({ nick, id, stavka, razmer_stavka }) => text(nick, id, stavka, razmer_stavka))
 
             let private = md5(`${msg.peerId}|${game.plays}`)
@@ -234,7 +219,7 @@ function commandManager(msg) {
             if (game.players == 0) {
                 return msg.send(`Ни одной ставки не обнаружено.`)
             } else {
-                return msg.send(`Всего поставлено: ${new Intl.NumberFormat('ru-RU').format(game.bank)} MK\n\n${(game.x1 > 0 && x1.length > 0) ? 'Ставки на x1:' : ''}\n${x1.join('\n')}\n\n${(game.x2 > 0 && x2.length > 0) ? 'Ставки на x2:' : ''}\n${x2.join('\n')}\n\n${(game.x5 > 0 && x5.length > 0) ? 'Ставки на x5:' : ''}\n${x5.join('\n')}\n\n${(game.x10 > 0 && x10.length > 0) ? 'Ставки на x10:' : ''}\n${x10.join('\n')}\n\n${(game.coinfl > 0 && coinfl.length > 0) ? 'Ставки на COINFLIP:' : ''}\n${coinfl.join('\n')}\n\n${(game.pachi > 0 && pachi.length > 0) ? 'Ставки на PACHINKO:' : ''}\n${pachi.join('\n')}\n\n${(game.cash > 0 && cash.length > 0) ? 'Ставки на CASHHUNT:' : ''}\n${cash.join('\n')}\n\n${(game.crazy > 0 && crazy.length > 0) ? 'Ставки на CRAZYTIME:' : ''}\n${crazy.join('\n')}\n\nДо конца раунда: ${(Math.trunc((game.dater - Date.now()) / 1000) > 0) ? `${Math.trunc((game.dater - Date.now()) / 1000)}` : ''} сек.\n\n${game.dater != 0 ? `hash: ${md5(`${ishod},${kudadopishod},${dopishod}|${private}`)}` : ''}`)
+                return msg.send(`Всего поставлено: ${new Intl.NumberFormat('ru-RU').format(game.bank)} MK\n\n${(game.x1 > 0 && list["x1"].length > 0) ? 'Ставки на x1:' : ''}\n${list["x1"].join('\n')}\n\n${(game.x2 > 0 && list["x2"].length > 0) ? 'Ставки на x2:' : ''}\n${list["x2"].join('\n')}\n\n${(game.x5 > 0 && list["x5"].length > 0) ? 'Ставки на x5:' : ''}\n${list["x5"].join('\n')}\n\n${(game.x10 > 0 && list["x10"].length > 0) ? 'Ставки на x10:' : ''}\n${list["x10s"].join('\n')}\n\n${(game.coinfl > 0 && list["coinfl"].length > 0) ? 'Ставки на COINFLIP:' : ''}\n${list["coinfl"].join('\n')}\n\n${(game.pachi > 0 && list["pachi"].length > 0) ? 'Ставки на PACHINKO:' : ''}\n${list["pachi"].join('\n')}\n\n${(game.cash > 0 && list["cash"].length > 0) ? 'Ставки на CASHHUNT:' : ''}\n${list["cash"].join('\n')}\n\n${(game.crazy > 0 && list["crazy"].length > 0) ? 'Ставки на CRAZYTIME:' : ''}\n${list["crazy"].join('\n')}\n\nДо конца раунда: ${(Math.trunc((game.dater - Date.now()) / 1000) > 0) ? `${Math.trunc((game.dater - Date.now()) / 1000)}` : ''} сек.\n\n${game.dater != 0 ? `hash: ${md5(`${ishod},${kudadopishod},${dopishod}|${private}`)}` : ''}`)
             }
         },
         x1: async () => {
@@ -265,40 +250,24 @@ function commandManager(msg) {
             const game = await Game.findOne({ id: 1 })
             let private = md5(`${msg.peerId}|${game.plays}`)
 
-            const x1 = []; const x2 = []; const x5 = []; const x10 = []; const coinfl = []; const pachi = []; const cash = []; const crazy = []
+            const list = {
+                x1: [],
+                x2: [],
+                x5: [],
+                x10: [],
+                coinfl: [],
+                pachi: [],
+                cash: [],
+                crazy: []
+            }
 
             const stavochnik = await User.find({ stavka: { $ne: 'none' } })
             const text = (nick, id, stavka, razmer_stavka) => {
-                switch (stavka) {
-                    case 'x1':
-                        x1.push(`[id${id}|${nick}] - ${new Intl.NumberFormat('ru-RU').format(razmer_stavka)} MK`)
-                        break;
-                    case 'x2':
-                        x2.push(`[id${id}|${nick}] - ${new Intl.NumberFormat('ru-RU').format(razmer_stavka)} MK`)
-                        break;
-                    case 'x5':
-                        x5.push(`[id${id}|${nick}] - ${new Intl.NumberFormat('ru-RU').format(razmer_stavka)} MK`)
-                        break;
-                    case 'x10':
-                        x10.push(`[id${id}|${nick}] - ${new Intl.NumberFormat('ru-RU').format(razmer_stavka)} MK`)
-                        break;
-                    case 'coinfl':
-                        coinfl.push(`[id${id}|${nick}] - ${new Intl.NumberFormat('ru-RU').format(razmer_stavka)} MK`)
-                        break;
-                    case 'pachi':
-                        pachi.push(`[id${id}|${nick}] - ${new Intl.NumberFormat('ru-RU').format(razmer_stavka)} MK`)
-                        break;
-                    case 'cash':
-                        cash.push(`[id${id}|${nick}] - ${new Intl.NumberFormat('ru-RU').format(razmer_stavka)} MK`)
-                        break;
-                    case 'crazy':
-                        crazy.push(`[id${id}|${nick}] - ${new Intl.NumberFormat('ru-RU').format(razmer_stavka)} MK`)
-                        break;
-                }
+                list[stavka].push(`[id${id}|${nick}] - ${new Intl.NumberFormat('ru-RU').format(razmer_stavka)} MK`)
             }
             stavochnik.map(({ nick, id, stavka, razmer_stavka }) => text(nick, id, stavka, razmer_stavka))
 
-            return msg.send(`Данные о текущей игре CRAZYTIME:\n\nБанк: ${new Intl.NumberFormat('ru-RU').format(game.bank)} МК\nХэш: ${md5(`${ishod},${kudadopishod},${dopishod}|${private}`)}\nПроверка честности хэша: ${ishod},${kudadopishod},${dopishod}|${private}\n\n${(game.x1 > 0 && x1.length > 0) ? 'Ставки на x1:' : ''}\n${x1.join('\n')}\n\n${(game.x2 > 0 && x2.length > 0) ? 'Ставки на x2:' : ''}\n${x2.join('\n')}\n\n${(game.x5 > 0 && x5.length > 0) ? 'Ставки на x5:' : ''}\n${x5.join('\n')}\n\n${(game.x10 > 0 && x10.length > 0) ? 'Ставки на x10:' : ''}\n${x10.join('\n')}\n\n${(game.coinfl > 0 && coinfl.length > 0) ? 'Ставки на COINFLIP:' : ''}\n${coinfl.join('\n')}\n\n${(game.pachi > 0 && pachi.length > 0) ? 'Ставки на PACHINKO:' : ''}\n${pachi.join('\n')}\n\n${(game.cash > 0 && cash.length > 0) ? 'Ставки на CASHHUNT:' : ''}\n${cash.join('\n')}\n\n${(game.crazy > 0 && crazy.length > 0) ? 'Ставки на CRAZYTIME:' : ''}\n${crazy.join('\n')}\n\nДо конца раунда: ${(Math.trunc((game.dater - Date.now()) / 1000) > 0) ? `${Math.trunc((game.dater - Date.now()) / 1000)}` : ''} сек.`)
+            return msg.send(`Данные о текущей игре CRAZYTIME:\n\nБанк: ${new Intl.NumberFormat('ru-RU').format(game.bank)} МК\nХэш: ${md5(`${ishod},${kudadopishod},${dopishod}|${private}`)}\nПроверка честности хэша: ${ishod},${kudadopishod},${dopishod}|${private}\n\n${(game.x1 > 0 && list["x1"].length > 0) ? 'Ставки на x1:' : ''}\n${list["x1"].join('\n')}\n\n${(game.x2 > 0 && list["x2"].length > 0) ? 'Ставки на x2:' : ''}\n${list["x2"].join('\n')}\n\n${(game.x5 > 0 && list["x5"].length > 0) ? 'Ставки на x5:' : ''}\n${list["x5"].join('\n')}\n\n${(game.x10 > 0 && list["x10"].length > 0) ? 'Ставки на x10:' : ''}\n${list["x10s"].join('\n')}\n\n${(game.coinfl > 0 && list["coinfl"].length > 0) ? 'Ставки на COINFLIP:' : ''}\n${list["coinfl"].join('\n')}\n\n${(game.pachi > 0 && list["pachi"].length > 0) ? 'Ставки на PACHINKO:' : ''}\n${list["pachi"].join('\n')}\n\n${(game.cash > 0 && list["cash"].length > 0) ? 'Ставки на CASHHUNT:' : ''}\n${list["cash"].join('\n')}\n\n${(game.crazy > 0 && list["crazy"].length > 0) ? 'Ставки на CRAZYTIME:' : ''}\n${list["crazy"].join('\n')}\n\nДо конца раунда: ${(Math.trunc((game.dater - Date.now()) / 1000) > 0) ? `${Math.trunc((game.dater - Date.now()) / 1000)}` : ''} сек.`)
         }
     }
     try {
