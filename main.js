@@ -25,7 +25,7 @@ setInterval(async () => {
             toppers[pos].save()
         }
 
-        const sbros = await User.updateMany({ topmonth: { $gt: 0 } }, { topmonth: 0 })
+        await User.updateMany({ topmonth: { $gt: 0 } }, { topmonth: 0 })
     }
 }, 60000);
 
@@ -43,7 +43,7 @@ setInterval(async () => {
             toppers[pos].save()
         }
 
-        const sbros = await User.updateMany({ topday: { $gt: 0 } }, { topday: 0 })
+        await User.updateMany({ topday: { $gt: 0 } }, { topday: 0 })
 
     }
 }, 60000);
