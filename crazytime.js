@@ -68,19 +68,19 @@ async function crazytime(msg, stavka) {
             game.x10 += 1
             await game.save()
             break;
-        case 'coinfl':
+        case 'cf':
             game.coinfl += 1
             await game.save()
             break;
-        case 'pachi':
+        case 'pach':
             game.pachi += 1
             await game.save()
             break;
-        case 'cash':
+        case 'ch':
             game.cash += 1
             await game.save()
             break;
-        case 'crazy':
+        case 'ct':
             game.crazy += 1
             await game.save()
             break;
@@ -219,7 +219,7 @@ function commandManager(msg) {
             if (game.players == 0) {
                 return msg.send(`Ни одной ставки не обнаружено.`)
             } else {
-                return msg.send(`Всего поставлено: ${new Intl.NumberFormat('ru-RU').format(game.bank)} MK\n\n${(game.x1 > 0 && list["x1"].length > 0) ? 'Ставки на x1:' : ''}\n${list["x1"].join('\n')}\n\n${(game.x2 > 0 && list["x2"].length > 0) ? 'Ставки на x2:' : ''}\n${list["x2"].join('\n')}\n\n${(game.x5 > 0 && list["x5"].length > 0) ? 'Ставки на x5:' : ''}\n${list["x5"].join('\n')}\n\n${(game.x10 > 0 && list["x10"].length > 0) ? 'Ставки на x10:' : ''}\n${list["x10s"].join('\n')}\n\n${(game.coinfl > 0 && list["coinfl"].length > 0) ? 'Ставки на COINFLIP:' : ''}\n${list["coinfl"].join('\n')}\n\n${(game.pachi > 0 && list["pachi"].length > 0) ? 'Ставки на PACHINKO:' : ''}\n${list["pachi"].join('\n')}\n\n${(game.cash > 0 && list["cash"].length > 0) ? 'Ставки на CASHHUNT:' : ''}\n${list["cash"].join('\n')}\n\n${(game.crazy > 0 && list["crazy"].length > 0) ? 'Ставки на CRAZYTIME:' : ''}\n${list["crazy"].join('\n')}\n\nДо конца раунда: ${(Math.trunc((game.dater - Date.now()) / 1000) > 0) ? `${Math.trunc((game.dater - Date.now()) / 1000)}` : ''} сек.\n\n${game.dater != 0 ? `hash: ${md5(`${ishod},${kudadopishod},${dopishod}|${private}`)}` : ''}`)
+                return msg.send(`Всего поставлено: ${new Intl.NumberFormat('ru-RU').format(game.bank)} MK\n\n${(game.x1 > 0 && list["x1"].length > 0) ? 'Ставки на x1:' : ''}\n${list["x1"].join('\n')}\n\n${(game.x2 > 0 && list["x2"].length > 0) ? 'Ставки на x2:' : ''}\n${list["x2"].join('\n')}\n\n${(game.x5 > 0 && list["x5"].length > 0) ? 'Ставки на x5:' : ''}\n${list["x5"].join('\n')}\n\n${(game.x10 > 0 && list["x10"].length > 0) ? 'Ставки на x10:' : ''}\n${list["x10"].join('\n')}\n\n${(game.coinfl > 0 && list["coinfl"].length > 0) ? 'Ставки на COINFLIP:' : ''}\n${list["coinfl"].join('\n')}\n\n${(game.pachi > 0 && list["pachi"].length > 0) ? 'Ставки на PACHINKO:' : ''}\n${list["pachi"].join('\n')}\n\n${(game.cash > 0 && list["cash"].length > 0) ? 'Ставки на CASHHUNT:' : ''}\n${list["cash"].join('\n')}\n\n${(game.crazy > 0 && list["crazy"].length > 0) ? 'Ставки на CRAZYTIME:' : ''}\n${list["crazy"].join('\n')}\n\nДо конца раунда: ${(Math.trunc((game.dater - Date.now()) / 1000) > 0) ? `${Math.trunc((game.dater - Date.now()) / 1000)}` : ''} сек.\n\n${game.dater != 0 ? `hash: ${md5(`${ishod},${kudadopishod},${dopishod}|${private}`)}` : ''}`)
             }
         },
         x1: async () => {
@@ -267,7 +267,7 @@ function commandManager(msg) {
             }
             stavochnik.map(({ nick, id, stavka, razmer_stavka }) => text(nick, id, stavka, razmer_stavka))
 
-            return msg.send(`Данные о текущей игре CRAZYTIME:\n\nБанк: ${new Intl.NumberFormat('ru-RU').format(game.bank)} МК\nХэш: ${md5(`${ishod},${kudadopishod},${dopishod}|${private}`)}\nПроверка честности хэша: ${ishod},${kudadopishod},${dopishod}|${private}\n\n${(game.x1 > 0 && list["x1"].length > 0) ? 'Ставки на x1:' : ''}\n${list["x1"].join('\n')}\n\n${(game.x2 > 0 && list["x2"].length > 0) ? 'Ставки на x2:' : ''}\n${list["x2"].join('\n')}\n\n${(game.x5 > 0 && list["x5"].length > 0) ? 'Ставки на x5:' : ''}\n${list["x5"].join('\n')}\n\n${(game.x10 > 0 && list["x10"].length > 0) ? 'Ставки на x10:' : ''}\n${list["x10s"].join('\n')}\n\n${(game.coinfl > 0 && list["coinfl"].length > 0) ? 'Ставки на COINFLIP:' : ''}\n${list["coinfl"].join('\n')}\n\n${(game.pachi > 0 && list["pachi"].length > 0) ? 'Ставки на PACHINKO:' : ''}\n${list["pachi"].join('\n')}\n\n${(game.cash > 0 && list["cash"].length > 0) ? 'Ставки на CASHHUNT:' : ''}\n${list["cash"].join('\n')}\n\n${(game.crazy > 0 && list["crazy"].length > 0) ? 'Ставки на CRAZYTIME:' : ''}\n${list["crazy"].join('\n')}\n\nДо конца раунда: ${(Math.trunc((game.dater - Date.now()) / 1000) > 0) ? `${Math.trunc((game.dater - Date.now()) / 1000)}` : ''} сек.`)
+            return msg.send(`Данные о текущей игре CRAZYTIME:\n\nБанк: ${new Intl.NumberFormat('ru-RU').format(game.bank)} МК\nХэш: ${md5(`${ishod},${kudadopishod},${dopishod}|${private}`)}\nПроверка честности хэша: ${ishod},${kudadopishod},${dopishod}|${private}\n\n${(game.x1 > 0 && list["x1"].length > 0) ? 'Ставки на x1:' : ''}\n${list["x1"].join('\n')}\n\n${(game.x2 > 0 && list["x2"].length > 0) ? 'Ставки на x2:' : ''}\n${list["x2"].join('\n')}\n\n${(game.x5 > 0 && list["x5"].length > 0) ? 'Ставки на x5:' : ''}\n${list["x5"].join('\n')}\n\n${(game.x10 > 0 && list["x10"].length > 0) ? 'Ставки на x10:' : ''}\n${list["x10"].join('\n')}\n\n${(game.coinfl > 0 && list["coinfl"].length > 0) ? 'Ставки на COINFLIP:' : ''}\n${list["coinfl"].join('\n')}\n\n${(game.pachi > 0 && list["pachi"].length > 0) ? 'Ставки на PACHINKO:' : ''}\n${list["pachi"].join('\n')}\n\n${(game.cash > 0 && list["cash"].length > 0) ? 'Ставки на CASHHUNT:' : ''}\n${list["cash"].join('\n')}\n\n${(game.crazy > 0 && list["crazy"].length > 0) ? 'Ставки на CRAZYTIME:' : ''}\n${list["crazy"].join('\n')}\n\nДо конца раунда: ${(Math.trunc((game.dater - Date.now()) / 1000) > 0) ? `${Math.trunc((game.dater - Date.now()) / 1000)}` : ''} сек.`)
         }
     }
     try {
