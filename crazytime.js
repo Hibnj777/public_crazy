@@ -51,30 +51,39 @@ async function crazytime(msg, stavka) {
 
     game.bank += Number(razmer_stavka.text)
 
-    if (stavka == 'x1') {
-        game.x1 += 1
-        await game.save()
-    } else if (stavka == 'x2') {
-        game.x2 += 1
-        await game.save()
-    } else if (stavka == 'x5') {
-        game.x5 += 1
-        await game.save()
-    } else if (stavka == 'x10') {
-        game.x10 += 1
-        await game.save()
-    } else if (stavka == 'cf') {
-        game.coinfl += 1
-        await game.save()
-    } else if (stavka == 'pach') {
-        game.pachi += 1
-        await game.save()
-    } else if (stavka == 'ch') {
-        game.cash += 1
-        await game.save()
-    } else if (stavka == 'ct') {
-        game.crazy += 1
-        await game.save()
+    switch (stavka) {
+        case 'x1':
+            game.x1 += 1
+            await game.save()
+            break;
+        case 'x2':
+            game.x2 += 1
+            await game.save()
+            break;
+        case 'x5':
+            game.x5 += 1
+            await game.save()
+            break;
+        case 'x10':
+            game.x10 += 1
+            await game.save()
+            break;
+        case 'coinfl':
+            game.coinfl += 1
+            await game.save()
+            break;
+        case 'pachi':
+            game.pachi += 1
+            await game.save()
+            break;
+        case 'cash':
+            game.cash += 1
+            await game.save()
+            break;
+        case 'crazy':
+            game.crazy += 1
+            await game.save()
+            break;
     }
 
     if (ishod == 'none') {
@@ -97,7 +106,7 @@ async function crazytime(msg, stavka) {
         let kof = (ishod == 'coinfl') ? cf[Math.floor(Math.random() * cf.length)] : (ishod == 'pachi') ? pachi[Math.floor(Math.random() * pachi.length)] : (ishod == 'cash') ? crazy[Math.floor(Math.random() * crazy.length)] : (ishod == 'crazy') ? crazy[Math.floor(Math.random() * crazy.length)] : ''
         kf = kof
     }
-    console.log(kf)
+
     if (game.players == 0) {
 
         game.players += 1
@@ -192,7 +201,7 @@ function commandManager(msg) {
             const stavochnik = await User.find({ stavka: { $ne: 'none' } })
             const text = (nick, id, stavka, razmer_stavka) => {
                 switch (stavka) {
-                    case 'x1': 
+                    case 'x1':
                         x1.push(`[id${id}|${nick}] - ${new Intl.NumberFormat('ru-RU').format(razmer_stavka)} MK`)
                         break;
                     case 'x2':
@@ -261,7 +270,7 @@ function commandManager(msg) {
             const stavochnik = await User.find({ stavka: { $ne: 'none' } })
             const text = (nick, id, stavka, razmer_stavka) => {
                 switch (stavka) {
-                    case 'x1': 
+                    case 'x1':
                         x1.push(`[id${id}|${nick}] - ${new Intl.NumberFormat('ru-RU').format(razmer_stavka)} MK`)
                         break;
                     case 'x2':
