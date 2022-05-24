@@ -42,10 +42,10 @@ async function crazytime(msg, stavka) {
     const findUser = await User.findOne({ id: msg.senderId });
     const razmer_stavka = await msg.question(`✏ ${findUser.nick}, введите ставку на ${stavka == 'cf' ? 'COINFLIP' : stavka == 'pach' ? 'PACHINKO' : stavka == 'ch' ? 'CASHHUNT' : stavka == 'ct' ? 'CRAZYTIME' : stavka}:`)
     const answerIsNumeric = isNumeric(razmer_stavka.text)
-    if (Number(razmer_stavka.text) > findUser.money) return msg.send(`У вас не хватает денег!`)
-    if (Number(razmer_stavka.text) < 0) return msg.send(`Ставка не может быть меньше 0!`)
-    if (findUser.money < Number(razmer_stavka.text)) return msg.send(`Недостаточно средств.`)
-    if (findUser.stavka != 'none') return msg.send(`Нельзя ставить несколько ставок подряд!`)
+    if (Number(razmer_stavka.text) > findUser.money) return msg.send(`❌ У вас не хватает денег!`)
+    if (Number(razmer_stavka.text) < 0) return msg.send(`❌ Ставка не может быть меньше 0!`)
+    if (findUser.money < Number(razmer_stavka.text)) return msg.send(`❌ Недостаточно средств.`)
+    if (findUser.stavka != 'none') return msg.send(`❌ Нельзя ставить несколько ставок подряд!`)
     if (!answerIsNumeric) return
     const game = await Game.findOne({ id: 1 })
 
@@ -141,10 +141,10 @@ async function crazytime(msg, stavka) {
         }, 1000)
 
         setTimeout(() => {
-            msg.send(`Выпал дополнительный бонус на ${(kudadopishod) == 'pachi' ? 'PACHINKO' : (kudadopishod) == 'coinfl' ? 'COINFLIP' : (kudadopishod) == 'cash' ? 'CASHHUNT' : (kudadopishod) == 'crazy' ? 'CRAZYTIME' : kudadopishod} с коэффициентом ${dopishod} `)
+            msg.send(`🔒 Выпал дополнительный бонус на ${(kudadopishod) == 'pachi' ? 'PACHINKO' : (kudadopishod) == 'coinfl' ? 'COINFLIP' : (kudadopishod) == 'cash' ? 'CASHHUNT' : (kudadopishod) == 'crazy' ? 'CRAZYTIME' : kudadopishod} с коэффициентом ${dopishod} `)
 
             let private = md5(`${msg.peerId}|${game.plays}`)
-            msg.send(`${(ishod) == 'pachi' ? `Выпала бонусная игра PACHINKO\n\nВыпавший коэффициент: x${kf}` : (ishod) == 'coinfl' ? 'Выпала бонусная игра COINFLIP\nВыпавший коэффициент: x' + kf : (ishod) == 'cash' ? 'Выпала бонусная игра CASHHUNT\n\nВыпавший коэффициент: x' + kf : (ishod) == 'crazy' ? 'Выпала бонусная игра CRAZYTIME\n\nВыпавший коэффициент: x' + kf : `Выпавший коэффициент: ${ishod}`}\n\n${winners.join('\n')}\n\nhash: ${md5(`${ishod},${kudadopishod},${dopishod}|${private}`)}\nПроверка на честность: ${ishod},${kudadopishod},${dopishod}|${private}`, {
+            msg.send(`${(ishod) == 'pachi' ? `🕺 Выпала бонусная игра PACHINKO\n\nВыпавший коэффициент: x${kf}` : (ishod) == 'coinfl' ? '🕺 Выпала бонусная игра COINFLIP\nВыпавший коэффициент: x' + kf : (ishod) == 'cash' ? '🕺 Выпала бонусная игра CASHHUNT\n\nВыпавший коэффициент: x' + kf : (ishod) == 'crazy' ? '🕺 Выпала бонусная игра CRAZYTIME\n\nВыпавший коэффициент: x' + kf : `🕺 Выпавший коэффициент: ${ishod}`}\n\n${winners.join('\n')}\n\nhash: ${md5(`${ishod},${kudadopishod},${dopishod}|${private}`)}\nПроверка на честность: ${ishod},${kudadopishod},${dopishod}|${private}`, {
                 attachment: (ishod == 'x1') ? 'photo-213048360_457239018' : (ishod == 'x2') ? 'photo-213048360_457239019' : (ishod == 'x5') ? 'photo-213048360_457239020' : (ishod == 'x10') ? 'photo-213048360_457239021' : (ishod == 'coinfl') ? 'photo-213048360_457239023' : (ishod == 'pachi') ? 'photo-213048360_457239025' : (ishod == 'cash') ? 'photo-213048360_457239022' : (ishod == 'crazy') ? 'photo-213048360_457239024' : ''
             })
 
@@ -190,7 +190,7 @@ function commandManager(msg) {
             if (findUser.stavka == 'none') {
                 return msg.send(`💰 ${findUser.nick}, Ваш баланс: ${new Intl.NumberFormat('ru-RU').format(findUser.money)} MK`)
             } else {
-                return msg.send(`У вас стоит ставка, просмотр баланса недоступен.`)
+                return msg.send(`❌ У вас стоит ставка, просмотр баланса недоступен.`)
             }
         },
         bank: async () => {
@@ -217,9 +217,9 @@ function commandManager(msg) {
             let private = md5(`${msg.peerId}|${game.plays}`)
 
             if (game.players == 0) {
-                return msg.send(`Ни одной ставки не обнаружено.`)
+                return msg.send(`😔 Ни одной ставки не обнаружено.`)
             } else {
-                return msg.send(`Всего поставлено: ${new Intl.NumberFormat('ru-RU').format(game.bank)} MK\n\n${(game.x1 > 0 && list["x1"].length > 0) ? 'Ставки на x1:' : ''}\n${list["x1"].join('\n')}\n\n${(game.x2 > 0 && list["x2"].length > 0) ? 'Ставки на x2:' : ''}\n${list["x2"].join('\n')}\n\n${(game.x5 > 0 && list["x5"].length > 0) ? 'Ставки на x5:' : ''}\n${list["x5"].join('\n')}\n\n${(game.x10 > 0 && list["x10"].length > 0) ? 'Ставки на x10:' : ''}\n${list["x10"].join('\n')}\n\n${(game.coinfl > 0 && list["coinfl"].length > 0) ? 'Ставки на COINFLIP:' : ''}\n${list["coinfl"].join('\n')}\n\n${(game.pachi > 0 && list["pachi"].length > 0) ? 'Ставки на PACHINKO:' : ''}\n${list["pachi"].join('\n')}\n\n${(game.cash > 0 && list["cash"].length > 0) ? 'Ставки на CASHHUNT:' : ''}\n${list["cash"].join('\n')}\n\n${(game.crazy > 0 && list["crazy"].length > 0) ? 'Ставки на CRAZYTIME:' : ''}\n${list["crazy"].join('\n')}\n\nДо конца раунда: ${(Math.trunc((game.dater - Date.now()) / 1000) > 0) ? `${Math.trunc((game.dater - Date.now()) / 1000)}` : ''} сек.\n\n${game.dater != 0 ? `hash: ${md5(`${ishod},${kudadopishod},${dopishod}|${private}`)}` : ''}`)
+                return msg.send(`💰 Всего поставлено: ${new Intl.NumberFormat('ru-RU').format(game.bank)} MK\n\n${(game.x1 > 0 && list["x1"].length > 0) ? 'Ставки на x1:' : ''}\n${list["x1"].join('\n')}\n\n${(game.x2 > 0 && list["x2"].length > 0) ? 'Ставки на x2:' : ''}\n${list["x2"].join('\n')}\n\n${(game.x5 > 0 && list["x5"].length > 0) ? 'Ставки на x5:' : ''}\n${list["x5"].join('\n')}\n\n${(game.x10 > 0 && list["x10"].length > 0) ? 'Ставки на x10:' : ''}\n${list["x10"].join('\n')}\n\n${(game.coinfl > 0 && list["coinfl"].length > 0) ? 'Ставки на COINFLIP:' : ''}\n${list["coinfl"].join('\n')}\n\n${(game.pachi > 0 && list["pachi"].length > 0) ? 'Ставки на PACHINKO:' : ''}\n${list["pachi"].join('\n')}\n\n${(game.cash > 0 && list["cash"].length > 0) ? 'Ставки на CASHHUNT:' : ''}\n${list["cash"].join('\n')}\n\n${(game.crazy > 0 && list["crazy"].length > 0) ? 'Ставки на CRAZYTIME:' : ''}\n${list["crazy"].join('\n')}\n\nДо конца раунда: ${(Math.trunc((game.dater - Date.now()) / 1000) > 0) ? `${Math.trunc((game.dater - Date.now()) / 1000)}` : ''} сек.\n\n${game.dater != 0 ? `hash: ${md5(`${ishod},${kudadopishod},${dopishod}|${private}`)}` : ''}`)
             }
         },
         x1: async () => {
@@ -267,7 +267,7 @@ function commandManager(msg) {
             }
             stavochnik.map(({ nick, id, stavka, razmer_stavka }) => text(nick, id, stavka, razmer_stavka))
 
-            return msg.send(`Данные о текущей игре CRAZYTIME:\n\nБанк: ${new Intl.NumberFormat('ru-RU').format(game.bank)} МК\nХэш: ${md5(`${ishod},${kudadopishod},${dopishod}|${private}`)}\nПроверка честности хэша: ${ishod},${kudadopishod},${dopishod}|${private}\n\n${(game.x1 > 0 && list["x1"].length > 0) ? 'Ставки на x1:' : ''}\n${list["x1"].join('\n')}\n\n${(game.x2 > 0 && list["x2"].length > 0) ? 'Ставки на x2:' : ''}\n${list["x2"].join('\n')}\n\n${(game.x5 > 0 && list["x5"].length > 0) ? 'Ставки на x5:' : ''}\n${list["x5"].join('\n')}\n\n${(game.x10 > 0 && list["x10"].length > 0) ? 'Ставки на x10:' : ''}\n${list["x10"].join('\n')}\n\n${(game.coinfl > 0 && list["coinfl"].length > 0) ? 'Ставки на COINFLIP:' : ''}\n${list["coinfl"].join('\n')}\n\n${(game.pachi > 0 && list["pachi"].length > 0) ? 'Ставки на PACHINKO:' : ''}\n${list["pachi"].join('\n')}\n\n${(game.cash > 0 && list["cash"].length > 0) ? 'Ставки на CASHHUNT:' : ''}\n${list["cash"].join('\n')}\n\n${(game.crazy > 0 && list["crazy"].length > 0) ? 'Ставки на CRAZYTIME:' : ''}\n${list["crazy"].join('\n')}\n\nДо конца раунда: ${(Math.trunc((game.dater - Date.now()) / 1000) > 0) ? `${Math.trunc((game.dater - Date.now()) / 1000)}` : ''} сек.`)
+            return msg.send(`📋 Данные о текущей игре CRAZYTIME:\n\n💰 Банк: ${new Intl.NumberFormat('ru-RU').format(game.bank)} МК\nХэш: ${md5(`${ishod},${kudadopishod},${dopishod}|${private}`)}\nПроверка честности хэша: ${ishod},${kudadopishod},${dopishod}|${private}\n\n${(game.x1 > 0 && list["x1"].length > 0) ? 'Ставки на x1:' : ''}\n${list["x1"].join('\n')}\n\n${(game.x2 > 0 && list["x2"].length > 0) ? 'Ставки на x2:' : ''}\n${list["x2"].join('\n')}\n\n${(game.x5 > 0 && list["x5"].length > 0) ? 'Ставки на x5:' : ''}\n${list["x5"].join('\n')}\n\n${(game.x10 > 0 && list["x10"].length > 0) ? 'Ставки на x10:' : ''}\n${list["x10"].join('\n')}\n\n${(game.coinfl > 0 && list["coinfl"].length > 0) ? 'Ставки на COINFLIP:' : ''}\n${list["coinfl"].join('\n')}\n\n${(game.pachi > 0 && list["pachi"].length > 0) ? 'Ставки на PACHINKO:' : ''}\n${list["pachi"].join('\n')}\n\n${(game.cash > 0 && list["cash"].length > 0) ? 'Ставки на CASHHUNT:' : ''}\n${list["cash"].join('\n')}\n\n${(game.crazy > 0 && list["crazy"].length > 0) ? 'Ставки на CRAZYTIME:' : ''}\n${list["crazy"].join('\n')}\n\nДо конца раунда: ${(Math.trunc((game.dater - Date.now()) / 1000) > 0) ? `${Math.trunc((game.dater - Date.now()) / 1000)}` : ''} сек.`)
         }
     }
     try {
